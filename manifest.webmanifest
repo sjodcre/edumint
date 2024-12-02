@@ -1,0 +1,17 @@
+{
+  "name": "nftfix",
+  "short_name": "nftfix",
+  "description": "nftfix",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
