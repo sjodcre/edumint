@@ -34,7 +34,7 @@ export default function AppCreateButton() {
     <div>
       <h1>Welcome to NFTfix</h1>
       {deferredPrompt && (
-        <Button onClick={handleInstallClick}>Install App</Button>
+        <Button onClick={handleInstallClick} variant="outline">Install App</Button>
       )}
     </div>
   );
