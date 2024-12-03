@@ -10,6 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@arweave-wallet-kit/arconnect-strategy": "^0.0.1-beta.4",
+    "@arweave-wallet-kit/core": "^0.0.1-beta.5",
+    "@arweave-wallet-kit/react": "^0.0.1-beta.3",
+    "@arweave-wallet-kit/styles": "^0.0.1-beta.3",
+    "@permaweb/aoconnect": "^0.0.62",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.2",
     "class-variance-authority": "^0.7.1",
@@ -19,6 +24,7 @@
     "path": "^0.12.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^7.0.2",
     "sharp": "^0.32.6",
     "sharp-ico": "^0.1.5",
     "tailwind-merge": "^2.5.5",

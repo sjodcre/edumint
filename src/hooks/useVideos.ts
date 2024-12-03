@@ -1,59 +1,44 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
-interface User {
-  id: string
-  username: string
-  profileImage: string
-  tier: string
-  followers: number
-  following: number
-}
-
-interface Video {
-  id: string
-  videoUrl: string
-  user: User
-  likes: number
-  comments: number
-  description: string
-}
-
-const placeholderVideo = '/video.mp4'
-const placeholderImages = ['/placeholder.jpg ']
+const placeholderVideo = '/video.mp4';
+const placeholderImages = ['/placeholder.jpg'];
 
 export function useVideos() {
-  const [videos, setVideos] = useState<Video[]>([])
-  const [loading, setLoading] = useState(false)
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchVideos = async () => {
-    setLoading(true)
+    setLoading(true);
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const newVideos: Video[] = Array.from({ length: 5 }, (_, i) => ({
       id: `video-${videos.length + i}`,
-      videoUrl: placeholderVideo, // Use the same placeholder video for all entries
+      videoUrl: placeholderVideo,
       user: {
         id: `user-${videos.length + i}`,
         username: `user${videos.length + i}`,
-        profileImage: placeholderImages[i % placeholderImages.length], // Cycle through placeholder images
-        tier: ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)], // Random tier
-        followers: Math.floor(Math.random() * 10000),
-        following: Math.floor(Math.random() * 1000)
+        profileImage: placeholderImages[i % placeholderImages.length],
+        tier: 'B',
+        followers: 100,
+        following: 50,
       },
-      likes: Math.floor(Math.random() * 10000),
-      comments: Math.floor(Math.random() * 1000),
-      description: `This is video ${videos.length + i} description. #trending #fyp`
-    }))
+      likes: 0, 
+      likeSummary: {
+        PostID: videos.length + i,
+        LikeCount: 0,
+      },
+      comments: 0,
+      description: 'Sample video description',
+    }));
 
-    setVideos(prevVideos => [...prevVideos, ...newVideos])
-    setLoading(false)
-  }
+    setVideos((prevVideos) => [...prevVideos, ...newVideos]);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    fetchVideos()
-  }, [])
+    fetchVideos();
+  }, []);
 
-  return { videos, loading, fetchVideos }
+  return { videos, loading, fetchVideos };
 }
-

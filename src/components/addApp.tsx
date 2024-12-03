@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Button } from './ui/button';
+import { ScreenContext } from '@/context/ScreenContext';
 
 export default function AppCreateButton() {
   const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
-
+  const {setCurrentScreen} = useContext(ScreenContext)
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
@@ -23,6 +24,7 @@ export default function AppCreateButton() {
       (deferredPrompt as any).userChoice.then((choiceResult: any) => {
         if (choiceResult.outcome === 'accepted') {
           console.log('User accepted the install prompt');
+          setCurrentScreen("videofeed")
         } else {
           console.log('User dismissed the install prompt');
         }
