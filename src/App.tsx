@@ -1,11 +1,19 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Heart, MessageCircle, Share2, User } from 'lucide-react'
+import { Heart, MessageCircle, Share2 } from 'lucide-react'
 import { useVideos } from "./hooks/useVideos"
 import { UserProfile } from "./components/userProfiles"
 
-function VideoCard({ video, onLike, onProfileClick }) {
+function VideoCard({
+  video,
+  onLike,
+  onProfileClick,
+}: {
+  video: Video;
+  onLike: (id: string, liked: boolean) => void;
+  onProfileClick: (user: User) => void;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isLiked, setIsLiked] = useState(false)
 
@@ -99,7 +107,7 @@ function VideoCard({ video, onLike, onProfileClick }) {
 export default function ScrollableShortVideoFeed() {
   const { videos, loading, fetchVideos } = useVideos()
   const [localVideos, setLocalVideos] = useState(videos)
-  const [selectedUser, setSelectedUser] = useState(null)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
 
   useEffect(() => {
     setLocalVideos(videos)
@@ -122,7 +130,7 @@ export default function ScrollableShortVideoFeed() {
     )
   }
 
-  const handleProfileClick = (user) => {
+  const handleProfileClick = (user : User) => {
     setSelectedUser(user)
   }
 
