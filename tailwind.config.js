@@ -43,6 +43,21 @@ export default {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
+
+			'bermuda': {
+ 				'50': '#f1fcf9',
+    			'100': '#d0f7ee',
+     			'200': '#a1eedd',
+        		'300': '#7ae1ce',
+        		'400': '#3cc5b0',
+        		'500': '#23a997',
+        		'600': '#19887b',
+        		'700': '#186d64',
+        		'800': '#185751',
+        		'900': '#184944',
+        		'950': '#082b29',
+    		},
+    
   			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',
