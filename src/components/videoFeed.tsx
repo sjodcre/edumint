@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Heart, MessageCircle, Share2 } from 'lucide-react'
 import { useVideos } from "../hooks/useVideos"
 
-function VideoCard({ video, onLike }) {
+function VideoCard({ video :any , onLike :any}) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isLiked, setIsLiked] = useState(false)
 

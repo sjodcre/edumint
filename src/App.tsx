@@ -5,7 +5,7 @@ import { Heart, MessageCircle, Share2, User } from 'lucide-react'
 import { useVideos } from "./hooks/useVideos"
 import { UserProfile } from "./components/userProfiles"
 
-function VideoCard({ video, onLike, onProfileClick }) {
+function VideoCard({ video :any, onLike: any, onProfileClick : any}) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isLiked, setIsLiked] = useState(false)
 
