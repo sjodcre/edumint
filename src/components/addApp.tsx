@@ -24,11 +24,11 @@ export default function AppCreateButton() {
       (deferredPrompt as any).userChoice.then((choiceResult: any) => {
         if (choiceResult.outcome === 'accepted') {
           console.log('User accepted the install prompt');
-          setCurrentScreen("videofeed")
         } else {
           console.log('User dismissed the install prompt');
         }
         setDeferredPrompt(null);
+        setCurrentScreen("videofeed")
       });
     }
   };
