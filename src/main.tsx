@@ -8,7 +8,7 @@ import AppCreateButton from './components/addApp';
 registerSW();
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-  <AppCreateButton/>
+    <AppCreateButton /> 
     <App />
   </React.StrictMode>,
 )
