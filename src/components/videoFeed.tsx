@@ -3,7 +3,7 @@ import { Heart, MessageCircle, Share2 } from 'lucide-react'
 import { useVideos } from "../hooks/useVideos"
 import { UserProfile } from "../components/userProfiles"
 import AppCreatePrompt from '../components/addApp'
-
+import { Video, User } from "../types/user"
 function VideoCard({
   video,
   onLike,

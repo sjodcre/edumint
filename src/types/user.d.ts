@@ -1,3 +1,6 @@
+export type UDLLicense = 'CC0' | 'CC-BY' | 'CC-BY-SA' | 'CC-BY-NC' | 'CC-BY-ND' | 'CC-BY-NC-SA' | 'CC-BY-NC-ND';
+
+export type UserTier = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
 
 interface User {
   id: string;

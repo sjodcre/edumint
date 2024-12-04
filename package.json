@@ -15,6 +15,7 @@
     "@arweave-wallet-kit/react": "^0.0.1-beta.3",
     "@arweave-wallet-kit/styles": "^0.0.1-beta.3",
     "@permaweb/aoconnect": "^0.0.62",
+    "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.2",
     "class-variance-authority": "^0.7.1",
@@ -28,7 +29,8 @@
     "sharp": "^0.32.6",
     "sharp-ico": "^0.1.5",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^1.1.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.1",
