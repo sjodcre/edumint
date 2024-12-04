@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import type { Video } from '@/types/user';
 
 const placeholderVideo = '/video.mp4';
 const placeholderImages = ['/placeholder.jpg'];

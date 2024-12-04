@@ -16,15 +16,15 @@ export interface PostFormData {
   videoFile?: File;
 }
 
-const LICENSE_OPTIONS: UDLLicense[] = [
-  'CC0',
-  'CC-BY',
-  'CC-BY-SA',
-  'CC-BY-NC',
-  'CC-BY-ND',
-  'CC-BY-NC-SA',
-  'CC-BY-NC-ND'
-];
+// const LICENSE_OPTIONS: UDLLicense[] = [
+//   'CC0',
+//   'CC-BY',
+//   'CC-BY-SA',
+//   'CC-BY-NC',
+//   'CC-BY-ND',
+//   'CC-BY-NC-SA',
+//   'CC-BY-NC-ND'
+// ];
 
 export function CreatePostDrawer() {
   const [formData, setFormData] = useState<PostFormData>({
