@@ -3,7 +3,74 @@ import { Heart, MessageCircle, Share2 } from 'lucide-react'
 import { useVideos } from "../hooks/useVideos"
 import { UserProfile } from "../components/userProfiles"
 import AppCreatePrompt from '../components/addApp'
-import { Video, User } from "../types/user"
+import {Video, User } from "../types/user"
+
+
+export default function VideoFeed() {
+  const { videos, loading, fetchVideos, error } = useVideos();
+  const [localVideos, setLocalVideos] = useState(videos);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    setLocalVideos(videos);
+  }, [videos]);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const bottom = 
+      e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight;
+    if (bottom && !loading) {
+      fetchVideos();
+    }
+  };
+
+
+
+
+  const handleLike = (videoId: string, liked: boolean) => {
+    setLocalVideos(prevVideos => 
+      prevVideos.map(video => 
+        video.id === videoId 
+          ? { ...video, likes: video.likes + (liked ? 1 : -1) }
+          : video
+      )
+    )
+  }
+
+
+
+  if (loading && !localVideos.length) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="flex justify-center items-center h-screen text-red-500">Error: {error}</div>;
+  }
+
+  if (!localVideos.length) {
+    return <div className="flex justify-center items-center h-screen">No videos found</div>;
+  }
+
+  return (
+    <div 
+      className="h-screen overflow-y-auto" 
+      onScroll={handleScroll}
+    >
+      {localVideos.map((video) => (
+        <VideoCard 
+          key={video.id} 
+          video={video}
+          onLike={handleLike}
+          onProfileClick={setSelectedUser} 
+        />
+      ))}
+      {loading && (
+        <div className="flex justify-center p-4">
+          Loading more...
+        </div>
+      )}
+    </div>
+  );
+}
 function VideoCard({
   video,
   onLike,
@@ -99,55 +166,6 @@ function VideoCard({
           <span className="text-sm text-white">Share</span>
         </button>
       </div>
-    </div>
-  )
-}
-
-export default function VideoFeed() {
-  const { videos, loading, fetchVideos } = useVideos()
-  const [localVideos, setLocalVideos] = useState(videos)
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
-
-  useEffect(() => {
-    setLocalVideos(videos)
-  }, [videos])
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const bottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight
-    if (bottom && !loading) {
-      fetchVideos()
-    }
-  }
-
-  const handleLike = (videoId: string, liked: boolean) => {
-    setLocalVideos(prevVideos => 
-      prevVideos.map(video => 
-        video.id === videoId 
-          ? { ...video, likes: video.likes + (liked ? 1 : -1) }
-          : video
-      )
-    )
-  }
-
-  const handleProfileClick = (user : User) => {
-    setSelectedUser(user)
-  }
-
-  return (
-    <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory" onScroll={handleScroll}>
-      <AppCreatePrompt/>
-      {localVideos.map(video => (
-        <VideoCard 
-          key={video.id} 
-          video={video} 
-          onLike={handleLike} 
-          onProfileClick={handleProfileClick}
-        />
-      ))}
-      {loading && <div className="h-screen w-full flex items-center justify-center bg-black text-white">Loading...</div>}
-      {selectedUser && (
-        <UserProfile user={selectedUser} onClose={() => setSelectedUser(null)} />
-      )}
     </div>
   )
 }

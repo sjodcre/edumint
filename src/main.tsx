@@ -4,14 +4,15 @@ import App from './App'
 import './index.css'
 import { registerSW } from 'virtual:pwa-register';
 import { ScreenProvider } from './context/ScreenContext';
-// import { ArweaveWalletKit } from '@arweave-wallet-kit/react';
-// import ArConnectStrategy from '@arweave-wallet-kit/arconnect-strategy';
+import { ArweaveWalletKit } from '@arweave-wallet-kit/react';
+import ArConnectStrategy from '@arweave-wallet-kit/arconnect-strategy';
+import { ArweaveProvider } from './context/ProfileContext';
 
 registerSW();
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode> 
     <ScreenProvider>
- {/* <ArweaveWalletKit
+ <ArweaveWalletKit
         config={{
           permissions: [
             "ACCESS_ADDRESS",
@@ -25,9 +26,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         theme={{
           displayTheme: "dark",
         }}
-      > */}
+      >
+
+    <ArweaveProvider>
       <App/>
-    {/* </ArweaveWalletKit> */}
+    </ArweaveProvider>
+    </ArweaveWalletKit>
     </ScreenProvider>
   </React.StrictMode>,
 )

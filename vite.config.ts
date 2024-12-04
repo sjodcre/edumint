@@ -35,6 +35,14 @@ export default defineConfig({
       type: 'module',
     },
   })],
+  server: {
+    proxy : {
+      "/api": {
+      target: 'https://ans-stats.decent.land',
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/api/, '')
+    }}
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

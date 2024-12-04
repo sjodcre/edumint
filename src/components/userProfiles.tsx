@@ -1,5 +1,7 @@
+import { useState } from "react"
 import { CreatePostDrawer } from "./post/createPost"
 import { Button } from "./ui/button"
+import VideoUploader from './videoUploader.tsx'; // Assuming VideoUploader component exists
 
 interface UserProfileProps {
   user: {
@@ -12,10 +14,22 @@ interface UserProfileProps {
   onClose: () => void
 }
 
-export function UserProfile({ user, onClose }: UserProfileProps) {
+export const UserProfile = ({ user, onClose }) => {
+  const [showVideoUploader, setShowVideoUploader] = useState(false);
+  const handleUpload = (manifestTxid: string | null) => {
+    console.log('Upload completed with manifestTxid:', manifestTxid);
+    // Handle post-upload actions here
+    setShowVideoUploader(false);
+  };
+
+  // Define handleCancel function
+  const handleCancel = () => {
+    console.log('Upload canceled');
+    setShowVideoUploader(false);
+  };
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-80">
+      <div className="bg-white rounded-lg p-6 w-96 max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Profile</h2>
           <Button onClick={onClose} className="text-gray-500 hover:text-gray-700">
@@ -44,13 +58,27 @@ export function UserProfile({ user, onClose }: UserProfileProps) {
               <p className="text-gray-500">Following</p>
             </div>
           </div>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300">
-            Follow
-          </button>
+          <div className="flex space-x-2 mb-4">
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300">
+              Follow
+            </button>
+            <button 
+              className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition duration-300"
+              onClick={() => setShowVideoUploader(true)}
+            >
+              Upload Video
+            </button>
+          </div>
           <CreatePostDrawer/>
+          {showVideoUploader && (
+            <div className="mt-4 w-full">
+              <VideoUploader onUpload={handleUpload} onCancel={handleCancel} api={null} />
+            </div>
+          )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
 
