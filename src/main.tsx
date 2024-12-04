@@ -7,10 +7,12 @@ import { ScreenProvider } from './context/ScreenContext';
 import { ArweaveWalletKit } from '@arweave-wallet-kit/react';
 import ArConnectStrategy from '@arweave-wallet-kit/arconnect-strategy';
 import { ArweaveProvider } from './context/ProfileContext';
+import { BrowserRouter } from 'react-router-dom';
 
 registerSW();
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode> 
+  <BrowserRouter>
     <ScreenProvider>
  <ArweaveWalletKit
         config={{
@@ -33,5 +35,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </ArweaveProvider>
     </ArweaveWalletKit>
     </ScreenProvider>
+    </BrowserRouter>
   </React.StrictMode>,
 )

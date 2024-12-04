@@ -149,6 +149,9 @@ function VideoCard({
       </div>
 
       <div className="absolute bottom-4 right-4 flex flex-col items-center space-y-4">
+        <button>
+        
+        </button>
         <button 
           className="flex flex-col items-center"
           onClick={handleLike}
