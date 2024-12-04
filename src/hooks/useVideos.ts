@@ -5,9 +5,9 @@ import { createDataItemSigner, dryrun, message, result } from '@permaweb/aoconne
 import { processId } from '@/config/config';
 import { useActiveAddress } from '@arweave-wallet-kit/react';
 
-const BASE_URL = import.meta.env.PROD 
-  ? 'https://ans-stats.decent.land'
-  : '/api';
+// const BASE_URL = import.meta.env.PROD 
+//   ? 'https://ans-stats.decent.land'
+//   : '/api';
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;

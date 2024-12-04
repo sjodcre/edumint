@@ -3,18 +3,21 @@ import { CreatePostDrawer } from "./post/createPost"
 import { Button } from "./ui/button"
 import VideoUploader from './videoUploader.tsx'; // Assuming VideoUploader component exists
 
-interface UserProfileProps {
-  user: {
-    username: string
-    profileImage: string
-    tier: string
-    followers: number
-    following: number
-  }
-  onClose: () => void
-}
+// interface UserProfileProps {
+//   user: {
+//     username: string
+//     profileImage: string
+//     tier: string
+//     followers: number
+//     following: number
+//   }
+//   onClose: () => void
+// }
 
-export const UserProfile = ({ user, onClose }) => {
+export const UserProfile = ({ user , onClose }: {
+  user: any;
+  onClose: () => void;
+}) => {
   const [showVideoUploader, setShowVideoUploader] = useState(false);
   const handleUpload = (manifestTxid: string | null) => {
     console.log('Upload completed with manifestTxid:', manifestTxid);

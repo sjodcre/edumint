@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useActiveAddress, useConnection } from '@arweave-wallet-kit/react';
+import { Buffer } from 'buffer';
 // import Arweave from 'arweave';
 import { Button } from './ui/button';
 import { toast } from '../components/useToast';
@@ -47,7 +48,7 @@ interface UploadVideosProps {
 }
 
 
-const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel, api }) => {
+const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
   const [video, setVideo] = useState<Video | null>(null);
   const { connect: connectWallet } = useConnection();
   const activeAddress = useActiveAddress();
