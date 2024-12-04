@@ -7,6 +7,7 @@ import {Video, User } from "../types/user"
 export default function VideoFeed() {
   const { videos, loading, refetch: fetchVideos, error } = useVideos();
   const [localVideos, setLocalVideos] = useState(videos);
+  // @ts-ignore 
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
