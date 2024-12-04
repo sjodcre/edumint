@@ -147,7 +147,7 @@ export function useVideos() {
 
   return { 
     videos, 
-    loading, 
+    loading,
     error, 
     fetchPlayerProfile,
     refetch: () => fetchPlayerProfile()

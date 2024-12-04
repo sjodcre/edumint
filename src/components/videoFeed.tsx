@@ -1,13 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { Heart, MessageCircle, Share2 } from 'lucide-react'
 import { useVideos } from "../hooks/useVideos"
-import { UserProfile } from "../components/userProfiles"
-import AppCreatePrompt from '../components/addApp'
 import {Video, User } from "../types/user"
 
 
 export default function VideoFeed() {
-  const { videos, loading, fetchVideos, error } = useVideos();
+  const { videos, loading, refetch: fetchVideos, error } = useVideos();
   const [localVideos, setLocalVideos] = useState(videos);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
