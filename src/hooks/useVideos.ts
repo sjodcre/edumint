@@ -5,9 +5,6 @@ import { createDataItemSigner, dryrun, message, result } from '@permaweb/aoconne
 import { processId } from '@/config/config';
 import { useActiveAddress } from '@arweave-wallet-kit/react';
 
-// const BASE_URL = import.meta.env.PROD 
-//   ? 'https://ans-stats.decent.land'
-//   : '/api';
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
@@ -81,18 +78,18 @@ export function useVideos() {
         throw new Error('Invalid profile data');
       }
 
+      console.log( "pfp", await profileIdRes.Profile)
       const userDetails = {
         id: activeAddress,
         name: profileRes.Profile.DisplayName || "ANON",
-        image: profileRes.Profile.ProfileImage || "NONE",
         score: 0,
         bazarId: profileIdRes[0].ProfileId,
-        walletAddress: activeAddress,
+        walletAddress: profileRes.Owner || "no owner",
         displayName: profileRes.Profile.DisplayName || "ANON",
-        username: profileRes.Profile.Username || "unknown",
+        username: profileRes.Profile.UserName || "unknown",
         bio: profileRes.Profile.Bio || "",
-        avatar: profileRes.Profile.Avatar || "default-avatar.png",
-        banner: profileRes.Profile.Banner || "default-banner.png",
+        avatar: profileRes.Profile.ProfileImage || "default-avatar.png",
+        banner: profileRes.Profile.CoverImage || "default-banner.png",
         version: profileRes.Profile.Version || 1,
       };
 

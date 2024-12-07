@@ -4,6 +4,7 @@ export type UserTier = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
 
 interface User {
   id: string;
+  displayName: string;
   username: string;
   profileImage: string;
   tier: string;

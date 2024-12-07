@@ -1,3 +1,4 @@
+import { ConnectButton } from "@arweave-wallet-kit/react";
 import AppCreateButton from "./addApp";
 import Favicon from "/va.png"
 
@@ -14,8 +15,7 @@ export default function LandingPage() {
           width={40}
           height={50}
 
-           /> 
-
+           />
           <span className="ml-2 text-xl font-bold">Ripple</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
@@ -28,6 +28,8 @@ export default function LandingPage() {
           <Link className="text-sm font-medium hover:underline underline-offset-4" to="#">
             About
           </Link>
+          
+          <ConnectButton/>
         </nav>
       </header>
    <main className="flex-1 flex flex-col justify-center">
@@ -141,4 +143,3 @@ export default function LandingPage() {
     </div>
   )
 }
-
