@@ -32,7 +32,7 @@ export default function VideoFeed() {
     );
   };
 
-  const onProfileClick = (user : User) => {
+  const onProfileClick = (user: User) => {
     setSelectedUser(user);
   };
 
@@ -59,7 +59,7 @@ export default function VideoFeed() {
       </div>
     );
   }
-  localVideos.map((video) => console.log(video.user));
+  // localVideos.map((video) => console.log(video.user));
   return (
     <div className="h-screen overflow-y-auto" onScroll={handleScroll}>
       {localVideos.map((video) => (

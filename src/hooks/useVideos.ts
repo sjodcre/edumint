@@ -1,10 +1,14 @@
-import { useState, useEffect } from 'react';
-import type { Video } from '@/types/user';
-import { useArweaveProvider } from '@/context/ProfileContext';
-import { createDataItemSigner, dryrun, message, result } from '@permaweb/aoconnect';
-import { processId } from '@/config/config';
-import { useActiveAddress } from '@arweave-wallet-kit/react';
-
+import { useState, useEffect } from "react";
+import type { Video } from "@/types/user";
+import { useArweaveProvider } from "@/context/ProfileContext";
+import {
+  createDataItemSigner,
+  dryrun,
+  message,
+  result,
+} from "@permaweb/aoconnect";
+import { processId } from "@/config/config";
+import { useActiveAddress } from "@arweave-wallet-kit/react";
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
@@ -15,10 +19,13 @@ export function useVideos() {
   const [error, setError] = useState<string | null>(null);
   const arProvider = useArweaveProvider();
   const activeAddress = useActiveAddress();
+  const wait = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
-  const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-  const fetchWithRetry = async (fn: () => Promise<any>, retries = MAX_RETRIES) => {
+  const fetchWithRetry = async (
+    fn: () => Promise<any>,
+    retries = MAX_RETRIES,
+  ) => {
     try {
       return await fn();
     } catch (error) {
@@ -56,7 +63,7 @@ export function useVideos() {
       });
 
       if (!profileIdRes?.[0]?.ProfileId) {
-        throw new Error('No profile ID found');
+        throw new Error("No profile ID found");
       }
 
       const profileRes = await fetchWithRetry(async () => {
@@ -75,10 +82,10 @@ export function useVideos() {
       });
 
       if (!profileRes?.Profile) {
-        throw new Error('Invalid profile data');
+        throw new Error("Invalid profile data");
       }
 
-      console.log( "pfp", await profileIdRes.Profile)
+      // console.log("pfp", await profileIdRes.Profile);
       const userDetails = {
         id: activeAddress,
         name: profileRes.Profile.DisplayName || "ANON",
@@ -94,7 +101,7 @@ export function useVideos() {
       };
 
       // Update profile in ArweaveProvider context
-      console.log(userDetails)
+      // console.log(userDetails);
       if (arProvider?.profile) {
         arProvider.profile = userDetails;
       }
@@ -105,28 +112,31 @@ export function useVideos() {
           process: processId,
           tags: [{ name: "Action", value: "List-Posts" }],
           signer: createDataItemSigner(window.arweaveWallet),
-        })
+        });
 
         const postResult = await result({
           process: processId,
           message: msgRes,
         });
-          console.log(postResult)
+        console.log("all the posts", postResult);
         return JSON.parse(postResult.Messages[0].Data);
       });
 
-      setVideos(videosRes.map((post: any) => ({
-        id: post.Id,
-        videoUrl: `https://arweave.net/${post.VideoTxId}`,
-        user: userDetails,
-        likes: post.Likes || 0,
-        comments: post.Comments || 0,
-        description: post.Description || '',
-      })));
+      setVideos(
+        videosRes.map((post: Post) => ({
+          id: post.Id,
+          videoUrl: `https://arweave.net/${post.VideoTxId}`,
+          user: userDetails,
+          likes: post.Likes || 0,
+          comments: post.Comments || 0,
+          description: post.Description || "",
+        })),
+      );
 
       return userDetails;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch profile';
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch profile";
       console.error(errorMessage);
       setError(errorMessage);
       return null;
@@ -141,12 +151,11 @@ export function useVideos() {
     }
   }, [activeAddress]);
 
-
-  return { 
-    videos, 
+  return {
+    videos,
     loading,
-    error, 
+    error,
     fetchPlayerProfile,
-    refetch: () => fetchPlayerProfile()
+    refetch: () => fetchPlayerProfile(),
   };
 }

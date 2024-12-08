@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import ArConnect from "@arweave-wallet-kit/arconnect-strategy"
 import { registerSW } from "virtual:pwa-register";
 import { ScreenProvider } from "./context/ScreenContext";
 import { ArweaveWalletKit } from "@arweave-wallet-kit/react";
@@ -24,7 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               "DISPATCH",
             ],
             ensurePermissions: true,
-            strategies: [new ArweaveWebWalletStrategy(), new othent()],
+            strategies: [new ArConnect(),new ArweaveWebWalletStrategy(), new othent()],
           }}
           theme={{
             displayTheme: "light",
