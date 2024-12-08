@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
 import { useVideos } from "../hooks/useVideos";
 import { Video, User } from "../types/user";
+import { Navbar } from "./navbar";
 
 export default function VideoFeed() {
   const { videos, loading, refetch: fetchVideos, error } = useVideos();
@@ -61,19 +62,22 @@ export default function VideoFeed() {
   }
   // localVideos.map((video) => console.log(video.user));
   return (
-    <div className="h-screen overflow-y-auto" onScroll={handleScroll}>
-      {localVideos.map((video) => (
-        <VideoCard
-          key={video.id}
-          video={video}
-          onLike={handleLike}
-          onProfileClick={onProfileClick}
-        />
-      ))}
-      {loading && (
-        <div className="flex justify-center p-4">Loading more...</div>
-      )}
-    </div>
+    <>
+      <div className="h-screen overflow-y-auto" onScroll={handleScroll}>
+        {localVideos.map((video) => (
+          <VideoCard
+            key={video.id}
+            video={video}
+            onLike={handleLike}
+            onProfileClick={onProfileClick}
+          />
+        ))}
+        {loading && (
+          <div className="flex justify-center p-4">Loading more...</div>
+        )}
+      </div>
+      <Navbar />
+    </>
   );
 }
 
@@ -123,10 +127,11 @@ function VideoCard({
   };
 
   return (
-    <div className="relative h-screen w-full bg-black snap-start">
+
+    <div className="relative h-screen w-full bg-black snap-start flex items-center justify-center">
       <video
         ref={videoRef}
-        className="h-full w-full object-cover"
+        className="h-full w-full object-contain md:max-w-[400px] md:max-h-[calc(100vh-80px)]"
         loop
         muted
         playsInline
@@ -170,15 +175,17 @@ function VideoCard({
             {video.likes + (isLiked ? 1 : 0)}
           </span>
         </button>
-        <button className="flex flex-col items-center">
-          <MessageCircle className="h-8 w-8 text-white" />
-          <span className="text-sm text-white">{video.comments}</span>
-        </button>
+        {/* <button className="flex flex-col items-center"> */}
+        {/*   <MessageCircle className="h-8 w-8 text-white" /> */}
+        {/*   <span className="text-sm text-white">{video.comments}</span> */}
+        {/* </button> */}
         <button className="flex flex-col items-center">
           <Share2 className="h-8 w-8 text-white" />
           <span className="text-sm text-white">Share</span>
         </button>
       </div>
+      <Navbar />
     </div>
+
   );
 }
