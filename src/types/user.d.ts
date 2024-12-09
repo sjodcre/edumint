@@ -1,3 +1,5 @@
+import { StringToBoolean } from "class-variance-authority/types";
+
 export type UDLLicense =
   | "CC0"
   | "CC-BY"
@@ -25,13 +27,21 @@ interface Like {
   UserPID: string;
   Timestamp: number;
 }
+
+
 interface Post {
   Id: number;
   Likes: Like;
   Comments: string;
-  VideoTxId: string;
-  user: User;
+  VideoTxId: string; 
+  AuthorWallet: string;
+  Author: string;
+  Price: number;
+  Title: string;
+  SellingStatus: boolean;
+  profileImage: string;
   Description: string;
+  Timestamp: number;
 }
 interface PostLikesSummary {
   PostID: number;
@@ -41,11 +51,14 @@ interface PostLikesSummary {
 interface Video {
   id: string;
   videoUrl: string;
+  title: string;
   user: User;
   likes: number;
   likeSummary: PostLikesSummary;
   comments: number;
   description: string;
+  price: number;
+  sellingStatus: boolean
 }
 
 interface UserDetails {

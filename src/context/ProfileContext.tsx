@@ -4,6 +4,7 @@ import React from 'react';
 import arconnect from '/favicon.png';
 import { getProfileByWalletAddress } from '@/lib/ProfileUtils';
 import { useConnection } from '@arweave-wallet-kit/react';
+import { User } from '@/types/user';
 
 // import { connect } from '@othent/kms';
 // import * as Othent from '@othent/kms';
@@ -49,6 +50,8 @@ interface ArweaveContextState {
   toggleProfileUpdate: boolean;
   setToggleProfileUpdate: (toggleUpdate: boolean) => void;
   vouch: VouchType | null;
+  selectedUser: User | null;
+  setSelectedUser: (user: User| null) => void;
 }
 
 interface ArweaveProviderProps {
@@ -61,7 +64,7 @@ export type AOProfileType = {
   displayName: string | null;
   username: string | null;
   bio: string | null;
-  avatar: string | null;
+  profileImage: string | null;
   banner: string | null;
   version: string | null;
 };
@@ -85,6 +88,8 @@ const DEFAULT_CONTEXT: ArweaveContextState = {
   toggleProfileUpdate: false,
   setToggleProfileUpdate(_toggleUpdate: boolean) { },
   vouch: null,
+  selectedUser: null,
+  setSelectedUser(_user: User | null) { }
 };
 
 const ARContext = React.createContext<ArweaveContextState>(DEFAULT_CONTEXT);
@@ -114,7 +119,7 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 
   const [profile, setProfile] = React.useState<ProfileHeaderType | null>(null);
   const [toggleProfileUpdate, setToggleProfileUpdate] = React.useState<boolean>(false);
-
+  const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
 
   React.useEffect(() => {
     handleWallet();
@@ -250,6 +255,8 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
           toggleProfileUpdate,
           setToggleProfileUpdate,
           vouch,
+          selectedUser,
+          setSelectedUser
         }}
       >
         {props.children}

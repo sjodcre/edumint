@@ -1,6 +1,6 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from "react";
 
-type Screen = 'onboarding' | 'videofeed' | 'profile';
+type Screen = "onboarding" | "videofeed" | "profile" | "market";
 
 interface ScreenContextType {
   currentScreen: Screen;
@@ -8,15 +8,17 @@ interface ScreenContextType {
 }
 
 export const ScreenContext = createContext<ScreenContextType>({
-  currentScreen: 'onboarding',
-  setCurrentScreen: () => { },
+  currentScreen: "onboarding",
+  setCurrentScreen: () => {},
 });
 
-export const ScreenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('onboarding');
+export const ScreenProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [currentScreen, setCurrentScreen] = useState<Screen>("onboarding");
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // const isStandalone =
       //   window.matchMedia('(display-mode: standalone)').matches ||
       //   window.matchMedia('(display-mode: fullscreen)').matches ||
@@ -24,7 +26,7 @@ export const ScreenProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       //   (navigator as any).standalone === true; // For iOS Safari
 
       // if (isStandalone) {
-      setCurrentScreen('videofeed');
+      setCurrentScreen("videofeed");
       // }
     }
   }, []);

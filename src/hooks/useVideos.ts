@@ -18,6 +18,7 @@ export function useVideos() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const arProvider = useArweaveProvider();
+  const {setSelectedUser} = useArweaveProvider()
   const activeAddress = useActiveAddress();
   const wait = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -95,7 +96,7 @@ export function useVideos() {
         displayName: profileRes.Profile.DisplayName || "ANON",
         username: profileRes.Profile.UserName || "unknown",
         bio: profileRes.Profile.Bio || "",
-        avatar: profileRes.Profile.ProfileImage || "default-avatar.png",
+        profileImage: profileRes.Profile.ProfileImage || "default-avatar.png",
         banner: profileRes.Profile.CoverImage || "default-banner.png",
         version: profileRes.Profile.Version || 1,
       };
@@ -120,18 +121,23 @@ export function useVideos() {
         console.log("all the posts", postResult);
         return JSON.parse(postResult.Messages[0].Data);
       });
-
       setVideos(
         videosRes.map((post: Post) => ({
           id: post.Id,
           videoUrl: `https://arweave.net/${post.VideoTxId}`,
-          user: userDetails,
+          user: {
+            id: post.AuthorWallet,
+            username: post.Author,
+            profileImage: '/placeholder.png'
+          },
           likes: post.Likes || 0,
           comments: post.Comments || 0,
           description: post.Description || "",
+          price: post.Price,
+          sellingStatus: post.SellingStatus,
         })),
       );
-
+      setSelectedUser(userDetails)
       return userDetails;
     } catch (err) {
       const errorMessage =
