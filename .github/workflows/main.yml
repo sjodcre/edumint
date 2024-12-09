@@ -1,4 +1,4 @@
-name: Protocol Land Sync
+name: Sync
 on:
     # Run with every push to 'main' branch:
     push:
