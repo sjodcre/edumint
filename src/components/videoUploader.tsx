@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useActiveAddress, useConnection } from '@arweave-wallet-kit/react';
 import { Buffer } from 'buffer';
-// import Arweave from 'arweave';
 import { Button } from './ui/button';
 import { toast } from '../components/useToast';
 import { TagType } from '@/lib/ProfileUtils';
 import { useArweaveProvider } from '@/context/ProfileContext';
 import { connect as aoConnect, createDataItemSigner } from '@permaweb/aoconnect';
 import { GATEWAYS, getGQLData } from '@/lib/utils';
-
+import { Upload } from 'lucide-react';
+import { Progress } from './ui/progress';
 interface Video {
   id: string;
   file: File;
@@ -53,10 +53,12 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
   const { connect: connectWallet } = useConnection();
   const activeAddress = useActiveAddress();
   const arProvider = useArweaveProvider();
+  const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   const hasLargeVideo = video?.size && video.size > 5 * 1024 * 1024; // 5MB in bytes
 
-  const onDrop = (acceptedFiles: File[]) => {
+  const onDrop = useCallback( (acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
       const file = acceptedFiles[0]; // Only take the first file
       const newVideo = {
@@ -67,15 +69,18 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
       };
       setVideo(newVideo);
     }
-  };
+  },[] )
 
-  const { getRootProps, getInputProps } = useDropzone({ 
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
     onDrop, 
     accept: { 'video/*': [] },
     maxFiles: 1 // Only allow one file
   });
+  
 
   const uploadToArweave = async () => {
+    setUploading(true)
+    setUploadProgress(0)
     const aos = aoConnect();
 
     if (!video) {
@@ -164,6 +169,7 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
                             data: buffer,
                         });
                         console.log(`Asset process: ${processId}`);
+                        setUploadProgress(25)
                     } catch (e: any) {
                         console.error(`Spawn attempt ${retryCount + 1} failed:`, e);
                         retryCount++;
@@ -195,6 +201,7 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
                     if (gqlResponse && gqlResponse.data.length) {
                         console.log(`Fetched transaction:`, gqlResponse.data[0].node.id);
                         fetchedAssetId = gqlResponse.data[0].node.id;
+                        setUploadProgress(50)
                     } else {
                         console.log(`Transaction not found:`, processId);
                         retryCount++;
@@ -231,6 +238,7 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
                             data: JSON.stringify({ Id: processId, Quantity: balance }),
                         });
                         videoTxIds.push({ txid: processId, path: "0", type: video.file.type });
+                        setUploadProgress(100)
                         resolve();
                     }
                 } else {
@@ -255,40 +263,57 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
 
     } catch (error) {
       console.error('Error uploading video:', error);
+    } finally {
+      setUploading(false)
     }
   };
 
   return (
-    <div>
-      <div {...getRootProps()} style={{ border: '2px dashed #ccc', padding: '20px', cursor: 'pointer' }}>
+    <div className="w-full max-w-md mx-auto bg-zinc-800 p-6 rounded-lg shadow-lg">
+      <div
+        {...getRootProps()}
+        className={`border-2 border-dashed border-zinc-600 rounded-lg p-8 text-center cursor-pointer transition-colors ${
+          isDragActive ? 'border-zinc-400 bg-zinc-700' : 'hover:border-zinc-500 hover:bg-zinc-700/50'
+        }`}
+      >
         <input {...getInputProps()} />
-        <p>Drag & drop a video here, or click to select a file</p>
+        <Upload className="mx-auto h-12 w-12 text-zinc-400" />
+        <p className="mt-2 text-sm text-zinc-400">Drag & drop a video here, or click to select a file</p>
       </div>
       {video && (
-        <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+        <div className="mt-4">
           <video
             src={video.preview}
             controls
-            style={{ width: '100%', maxWidth: '600px' }}
-            className="mx-auto"
+            className="w-full rounded-lg"
           />
+          <p className="mt-2 text-sm text-zinc-400">
+            File: {video.file.name} ({(video.size / (1024 * 1024)).toFixed(2)} MB)
+          </p>
         </div>
       )}
-      <div className="flex items-center">
-        <span className="mr-2 text-xs font-medium">This asset will contain a license</span>
-        <input type="checkbox" defaultChecked className="mt-0.5" />
+      <div className="flex items-center mt-4">
+        <input type="checkbox" id="license" defaultChecked className="mr-2" />
+        <label htmlFor="license" className="text-xs text-zinc-400">This asset will contain a license</label>
       </div>
       {hasLargeVideo && (
-        <p className="text-red-500 mt-2">Cannot upload videos larger than 5MB</p>
+        <p className="text-red-500 mt-2 text-sm">Cannot upload videos larger than 5MB</p>
       )}
-      <div className="flex gap-4 mt-4">
+      {uploading && (
+        <div className="mt-4">
+          <Progress value={uploadProgress} className="w-full" />
+          <p className="text-sm text-zinc-400 mt-2">Uploading... {uploadProgress}%</p>
+        </div>
+      )}
+      <div className="flex justify-between mt-6">
         <Button
-          type="submit"
           onClick={uploadToArweave}
-          disabled={hasLargeVideo || false}
-        >Upload
+          disabled={hasLargeVideo || !video || uploading}
+          className="bg-blue-500 hover:bg-blue-600 text-white"
+        >
+          {uploading ? 'Uploading...' : 'Upload'}
         </Button>
-        <Button variant="secondary" onClick={onCancel}>
+        <Button variant="outline" onClick={onCancel} disabled={uploading}>
           Cancel
         </Button>
       </div>

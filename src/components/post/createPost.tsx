@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload } from 'lucide-react';
+import { Plus, Upload } from 'lucide-react';
 import type {UDLLicense} from "../../types/user"
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '../ui/drawer';
 import { Button } from '../ui/button';
@@ -51,7 +51,9 @@ export function CreatePostDrawer() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button >New Post</Button>
+        <Button>
+          <Plus className="text-white" size={24} />
+        </Button>
       </DrawerTrigger>
       <DrawerContent className="bg-gray-200 overflow-y-auto">
         <DrawerHeader>

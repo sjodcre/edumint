@@ -56,7 +56,8 @@ export function BottomNav() {
         <Home className="text-white" size={24} />
         <span className="sr-only">Home</span>
       </Button>
-      <Button variant="ghost" size="icon">
+      <Button variant="ghost" size="icon"
+        onClick={() => setCurrentScreen("upload")}>
         <Plus className="text-white" size={24} />
         <span className="sr-only">Recent</span>
       </Button>
