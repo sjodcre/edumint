@@ -1,12 +1,14 @@
 import { useState, useRef, useEffect } from "react";
-import { Heart, MessageCircle, Share2 } from "lucide-react";
+import { Heart, Share2 } from "lucide-react";
 import { useVideos } from "../hooks/useVideos";
 import { Video, User } from "../types/user";
 import { Navbar } from "./navbar";
+// import { useStore } from "../store/store";
 
 export default function VideoFeed() {
   const { videos, loading, refetch: fetchVideos, error } = useVideos();
   const [localVideos, setLocalVideos] = useState(videos);
+  // const {videos, loading, error, fetchPlayerProfile} = useStore()
   // @ts-ignore
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 

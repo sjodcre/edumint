@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Video } from "@/types/user";
+import type { Video, Post } from "@/types/user";
 import { useArweaveProvider } from "@/context/ProfileContext";
 import {
   createDataItemSigner,
@@ -100,7 +100,6 @@ export function useVideos() {
         version: profileRes.Profile.Version || 1,
       };
 
-      // Update profile in ArweaveProvider context
       // console.log(userDetails);
       if (arProvider?.profile) {
         arProvider.profile = userDetails;

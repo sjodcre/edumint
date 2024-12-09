@@ -27,7 +27,9 @@ interface Like {
 }
 interface Post {
   Id: number;
-  Like: Like;
+  Likes: Like;
+  Comments: string;
+  VideoTxId: string;
   user: User;
   Description: string;
 }
@@ -44,4 +46,21 @@ interface Video {
   likeSummary: PostLikesSummary;
   comments: number;
   description: string;
+}
+
+interface UserDetails {
+  id: string | undefined;
+  name: string;
+  score: number;
+  bazarId: string;
+  walletAddress: string;
+  displayName: string;
+  username: string;
+  bio: string;
+  avatar: string;
+  banner: string;
+  tier?: string;
+  version: number;
+  followers?: number;
+  following?: number;
 }

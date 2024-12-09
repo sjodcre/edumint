@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Home, Compass, PlusSquare, Heart, User } from 'lucide-react'
+import { Home, PlusSquare, User } from 'lucide-react'
 
 export function Navbar() {
   return (
