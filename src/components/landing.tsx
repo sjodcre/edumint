@@ -8,7 +8,7 @@ import { BottomNav, Navbar } from "./navbar";
 import { ScreenContext } from "@/context/ScreenContext";
 
 export default function Landing() {
-  const { videos, loading, refetch: fetchVideos, error } = useVideos();
+  const { videos, loading, error } = useVideos();
   const [localVideos, setLocalVideos] = useState(videos);
   const {setCurrentScreen} = useContext(ScreenContext)
   // @ts-ignore
