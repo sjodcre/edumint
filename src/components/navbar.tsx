@@ -5,7 +5,7 @@ import { useContext } from "react";
 export function Navbar() {
   const { setCurrentScreen } = useContext(ScreenContext);
   return (
-    <div className="hidden lg:flex flex-col justify-between w-16 bg-zinc-800 border-r border-zinc-700">
+    <div className="hidden lg:flex text-white flex-col justify-between w-16 bg-zinc-800 border-r border-zinc-700">
       <div>
         <div className="p-4">
           <h1 className="text-xl font-bold text-white">Brand</h1>
@@ -47,7 +47,7 @@ export function Navbar() {
 export function BottomNav() {
   const { setCurrentScreen } = useContext(ScreenContext);
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-zinc-800 border-t border-zinc-700 flex items-center justify-around">
+    <div className="lg:hidden  fixed bottom-0 left-0 right-0 h-16 bg-zinc-800 border-t border-zinc-700 flex items-center justify-around">
       <Button
         variant="ghost"
         size="icon"

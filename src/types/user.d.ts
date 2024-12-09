@@ -19,6 +19,10 @@ interface User {
   tier: string;
   followers: number;
   following: number;
+  tier?: string;
+  version?: number;
+  followers?: number;
+  following?: number;
 }
 
 interface Like {

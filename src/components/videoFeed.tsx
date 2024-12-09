@@ -2,8 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { Heart, Share2 } from "lucide-react";
 import { useVideos } from "../hooks/useVideos";
 import { Video, User } from "../types/user";
-import { BottomNav, Navbar } from "./navbar";
-// import { useStore } from "../store/store";
 
 export default function VideoFeed() {
   const { videos, loading, refetch: fetchVideos, error } = useVideos();
@@ -78,7 +76,6 @@ export default function VideoFeed() {
           <div className="flex justify-center p-4">Loading more...</div>
         )}
       </div>
-      <Navbar />
     </>
   );
 }
@@ -129,9 +126,7 @@ function VideoCard({
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="relative h-screen w-full bg-black snap-start flex items-center justify-center">
+     <div className="relative h-screen w-full bg-black snap-start flex items-center justify-center">
         <video
           ref={videoRef}
           className="h-full w-full object-contain md:max-w-[400px] md:max-h-[calc(100vh-80px)]"
@@ -147,7 +142,7 @@ function VideoCard({
           <p className="text-white text-sm mb-2">{video.description}</p>
         </div>
 
-        <div className="absolute bottom-4 left-4 flex items-center">
+        <div className="absolute bottom-20 left-4 flex items-center">
           <button
             onClick={() => onProfileClick(video.user)}
             className="flex items-center"
@@ -168,7 +163,7 @@ function VideoCard({
           </button>
         </div>
 
-        <div className="absolute bottom-4 right-4 flex flex-col items-center space-y-4">
+        <div className="absolute bottom-20 right-4 flex flex-col items-center space-y-4">
           <button></button>
           <button className="flex flex-col items-center" onClick={handleLike}>
             <Heart
@@ -188,7 +183,5 @@ function VideoCard({
           </button>
         </div>
       </div>
-      <BottomNav />
-    </div>
   );
 }

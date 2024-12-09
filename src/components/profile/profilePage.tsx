@@ -1,16 +1,6 @@
-import { Home, Clock, DollarSign } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "@/types/user";
-
-interface ProfilePageProps {
-  user: {
-    name: string;
-    username: string;
-    points: number;
-    avatar: string;
-  };
-}
 
 export default function ProfilePage({ user } : {user: User}) {
   return (
