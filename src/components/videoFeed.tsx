@@ -1,15 +1,17 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { Heart, Share2 } from "lucide-react";
 import { useVideos } from "../hooks/useVideos";
 import { Video, User } from "../types/user";
+import { useArweaveProvider } from "@/context/ProfileContext";
+import { ScreenContext } from "@/context/ScreenContext";
 
 export default function VideoFeed() {
   const { videos, loading, refetch: fetchVideos, error } = useVideos();
   const [localVideos, setLocalVideos] = useState(videos);
   // const {videos, loading, error, fetchPlayerProfile} = useStore()
   // @ts-ignore
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-
+  const {setSelectedUser} = useArweaveProvider()
+  const {setCurrentScreen} = useContext(ScreenContext)
   useEffect(() => {
     setLocalVideos(videos);
   }, [videos]);
@@ -35,6 +37,7 @@ export default function VideoFeed() {
 
   const onProfileClick = (user: User) => {
     setSelectedUser(user);
+    setCurrentScreen("profile")
   };
 
   if (loading && !localVideos.length) {

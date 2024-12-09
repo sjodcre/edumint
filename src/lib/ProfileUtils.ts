@@ -10,7 +10,7 @@ export async function fetchUserProfile(walletAddress: string): Promise<ProfileHe
         displayName: null,
         username: null,
         bio: null,
-        avatar: null,
+        profileImage: null,
         banner: null,
         version: null,
     };
@@ -35,7 +35,7 @@ export async function getProfileByWalletAddress(args: { address: string }): Prom
 		displayName: null,
 		username: null,
 		bio: null,
-		avatar: null,
+		profileImage: null,
 		banner: null,
 		version: null,
 	};
@@ -66,7 +66,7 @@ export async function getProfileByWalletAddress(args: { address: string }): Prom
 					displayName: fetchedProfile.Profile.DisplayName || null,
 					username: fetchedProfile.Profile.UserName || null,
 					bio: fetchedProfile.Profile.Description || null,
-					avatar: fetchedProfile.Profile.ProfileImage || null,
+					profileImage: fetchedProfile.Profile.ProfileImage || null,
 					banner: fetchedProfile.Profile.CoverImage || null,
 					version: fetchedProfile.Profile.Version || null,
 				};

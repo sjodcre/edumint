@@ -18,24 +18,24 @@ export default function Landing() {
     setLocalVideos(videos);
   }, [videos]);
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const bottom =
-      e.currentTarget.scrollHeight - e.currentTarget.scrollTop ===
-      e.currentTarget.clientHeight;
-    if (bottom && !loading) {
-      fetchVideos();
-    }
-  };
+  // const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+  //   const bottom =
+  //     e.currentTarget.scrollHeight - e.currentTarget.scrollTop ===
+  //     e.currentTarget.clientHeight;
+  //   if (bottom && !loading) {
+  //     fetchVideos();
+  //   }
+  // };
 
-  const handleLike = (videoId: string, liked: boolean) => {
-    setLocalVideos((prevVideos) =>
-      prevVideos.map((video) =>
-        video.id === videoId
-          ? { ...video, likes: video.likes + (liked ? 1 : -1) }
-          : video,
-      ),
-    );
-  };
+  // const handleLike = (videoId: string, liked: boolean) => {
+  //   setLocalVideos((prevVideos) =>
+  //     prevVideos.map((video) =>
+  //       video.id === videoId
+  //         ? { ...video, likes: video.likes + (liked ? 1 : -1) }
+  //         : video,
+  //     ),
+  //   );
+  // };
 
   const onProfileClick = (user: User) => {
     setSelectedUser(user);
