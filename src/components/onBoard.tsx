@@ -1,6 +1,6 @@
 import { ConnectButton } from "@arweave-wallet-kit/react";
 import AppCreateButton from "./addApp";
-import Favicon from "/va.png"
+import EdumintLogo from "/logo-black-icon.png"
 
 import {Link} from 'react-router-dom'
 
@@ -11,15 +11,15 @@ export default function LandingPage() {
         <Link className="flex items-center justify-center" to="/">
           <span className="sr-only">Video Platform</span>
          <img
-          src={Favicon}
+          src={EdumintLogo}
           width={40}
           height={50}
 
            />
           <span className="ml-2 text-xl font-bold">EduMint</span>
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:underline underline-offset-4" to="#">
+        <nav className="ml-auto flex gap-4 sm:gap-6 bg-black">
+          {/* <Link className="text-sm font-medium hover:underline underline-offset-4" to="#">
             Features
           </Link>
           <Link className="text-sm font-medium hover:underline underline-offset-4" to="#">
@@ -27,7 +27,7 @@ export default function LandingPage() {
           </Link>
           <Link className="text-sm font-medium hover:underline underline-offset-4" to="#">
             About
-          </Link>
+          </Link> */}
           
           <ConnectButton/>
         </nav>
@@ -71,7 +71,7 @@ export default function LandingPage() {
                     <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
                   </svg>
                 </div>
-                <h2 className="text-xl font-bold">Create Short Videos</h2>
+                <h2 className="text-xl text-black font-bold">Create Short Videos</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                   Easily create and edit short, engaging videos right from your device.
                 </p>
@@ -96,7 +96,7 @@ export default function LandingPage() {
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
                 </div>
-                <h2 className="text-xl font-bold">Connect with Creators</h2>
+                <h2 className="text-xl text-black font-bold">Connect with Creators</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                   Follow your favorite creators and discover new talent from around the world.
                 </p>
@@ -119,7 +119,7 @@ export default function LandingPage() {
                     <line x1="12" y1="19" x2="20" y2="19" />
                   </svg>
                 </div>
-                <h2 className="text-xl font-bold">Trending Content</h2>
+                <h2 className="text-xl text-black font-bold">Trending Content</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                   Stay up-to-date with the latest trends and viral content on our platform.
                 </p>
@@ -129,15 +129,15 @@ export default function LandingPage() {
         </section>
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center justify-between px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500 dark:text-gray-400">© 2023 VideoApp. All rights reserved.</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">© 2024 EduMint. All rights reserved.</p>
         <nav className="flex gap-4 sm:gap-6">
-          <Link className="text-xs hover:underline underline-offset-4" to="#">
+          {/* <Link className="text-xs hover:underline underline-offset-4" to="#">
             Terms of Service
           </Link>
           <Link className="text-xs hover:underline underline-offset-4" to="#">
 
             Privacy
-          </Link>
+          </Link> */}
         </nav>
       </footer>
     </div>

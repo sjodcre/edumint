@@ -57,12 +57,15 @@ interface Video {
   videoUrl: string;
   title: string;
   user: User;
+  liked: boolean;
+  autoId: number;
   likes: number;
   likeSummary: PostLikesSummary;
   comments: number;
   description: string;
   price: number;
-  sellingStatus: boolean
+  sellingStatus: boolean;
+  bookmarked: boolean;
 }
 
 interface UserDetails {

@@ -1,7 +1,7 @@
 {
-  "name": "ripple",
-  "short_name": "ripple",
-  "description": "ripple",
+  "name": "edumint",
+  "short_name": "edumint",
+  "description": "edumint",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "display": "standalone",
@@ -9,7 +9,7 @@
   "start_url": "/",
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "/logo-black-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml"
     }

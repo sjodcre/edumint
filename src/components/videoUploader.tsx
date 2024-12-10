@@ -6,10 +6,13 @@ import { Button } from './ui/button';
 import { toast } from '../components/useToast';
 import { TagType } from '@/lib/ProfileUtils';
 import { useArweaveProvider } from '@/context/ProfileContext';
-import { connect as aoConnect, createDataItemSigner } from '@permaweb/aoconnect';
+import { connect as aoConnect, createDataItemSigner, message, result } from '@permaweb/aoconnect';
 import { GATEWAYS, getGQLData } from '@/lib/utils';
 import { Upload } from 'lucide-react';
 import { Progress } from './ui/progress';
+import { processId } from "@/config/config";
+
+
 interface Video {
   id: string;
   file: File;
@@ -42,15 +45,16 @@ export function cleanProcessField(value: string) {
 }
 
 interface UploadVideosProps {
-  onUpload: (manifestTxid: string | null) => void;
-  onCancel: () => void;
-  api: any;
+  onUpload: (videoTxId: string | null, title: string, description: string) => void;
+  // onCancel: () => void;
 }
 
 
-const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
+const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload }) => {
   const [video, setVideo] = useState<Video | null>(null);
   const { connect: connectWallet } = useConnection();
+  const [postDescription, setPostDescription] = useState("");
+  const [postTitle, setPostTitle] = useState("");
   const activeAddress = useActiveAddress();
   const arProvider = useArweaveProvider();
   const [uploading, setUploading] = useState(false)
@@ -77,6 +81,55 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
     maxFiles: 1 // Only allow one file
   });
   
+  const createPosts = async (videoTxId: string, title: string, description: string) => {
+
+    if (!arProvider.profile) return;
+
+    // if (!manifestTxid) {
+    //   toast({
+    //     description: 'Please upload slides before creating the post.',
+    //   });
+    //   return;
+    // }
+    toast({
+      description: "Storing on AO...",
+    });
+    try {
+      // console.log("postTitle: ", title);
+      // console.log("postDescription: ", description);
+      const res = await message({
+        process: processId,
+        tags: [
+          { name: "Action", value: "Create-Post" },
+          { name: "VideoTxId", value: videoTxId },
+          { name: "Title", value: title || "Untitled" },
+          { name: "Name", value: arProvider.profile.username || "ANON" },
+          // { name: "MediaType", value: mediaType.toString() || "video"}, // Add this tag
+        ],
+        data: description || "No description",
+        signer: createDataItemSigner(window.arweaveWallet),
+      });
+
+      const createResult = await result({
+        process: processId,
+        message: res,
+      });
+
+      console.log("Created successfully", createResult);
+      console.log(createResult.Messages[0].Data);
+      //   toast({
+      //     description: "Post createad Successfully!!",
+      //   });
+      if (createResult.Messages[0].Data === "Post created successfully.") {
+        toast({
+          description: "Post created successfully!!",
+        });
+        console.log("Post created successfully!!")
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const uploadToArweave = async () => {
     setUploading(true)
@@ -110,8 +163,8 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
           const data = event.target?.result;
           if (data) {
             const dateTime = new Date().getTime().toString();
-            const title = "hardcode title";
-            const description = "hardcode description";
+            // const title = "hardcode title";
+            // const description = "hardcode description";
             const balance = 1;
             let contentType = video.file.type;
             console.log("contentType", contentType);
@@ -119,8 +172,10 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
                 const assetTags: TagType[] = [
                     { name: 'Content-Type', value: contentType },
                     { name: 'Creator', value: arProvider?.profile?.id || "ANON" },
-                    { name: 'Title', value: title },
-                    { name: 'Description', value: description }, 
+                    // { name: 'Title', value: title },
+                    // { name: 'Description', value: description }, 
+                    { name: 'Title', value: postTitle },
+                    { name: 'Description', value: postDescription }, 
                     { name: 'Asset-Type', value: contentType },
                     { name: 'Implements', value: 'ANS-110' },
                     { name: 'Date-Created', value: dateTime },
@@ -146,14 +201,22 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
                     console.error(e);
                 }
 
+                // if (processSrc) {
+                //     processSrc = processSrc.replaceAll('<CREATOR>', arProvider?.profile?.id || "ANON");
+                //     processSrc = processSrc.replaceAll(`'<NAME>'`, cleanProcessField(title));
+                //     processSrc = processSrc.replaceAll('<TICKER>', 'ATOMIC');
+                //     processSrc = processSrc.replaceAll('<DENOMINATION>', '1');
+                //     processSrc = processSrc.replaceAll('<BALANCE>', balance.toString());
+                //     processSrc = processSrc.replaceAll('<COLLECTION>', "");
+                // }
                 if (processSrc) {
-                    processSrc = processSrc.replaceAll('<CREATOR>', arProvider?.profile?.id || "ANON");
-                    processSrc = processSrc.replaceAll(`'<NAME>'`, cleanProcessField(title));
-                    processSrc = processSrc.replaceAll('<TICKER>', 'ATOMIC');
-                    processSrc = processSrc.replaceAll('<DENOMINATION>', '1');
-                    processSrc = processSrc.replaceAll('<BALANCE>', balance.toString());
-                    processSrc = processSrc.replaceAll('<COLLECTION>', "");
-                }
+                  processSrc = processSrc.replace(/<CREATOR>/g, arProvider?.profile?.id || "ANON");
+                  processSrc = processSrc.replace(/'<NAME>'/g, cleanProcessField(postTitle));
+                  processSrc = processSrc.replace(/<TICKER>/g, 'ATOMIC');
+                  processSrc = processSrc.replace(/<DENOMINATION>/g, '1');
+                  processSrc = processSrc.replace(/<BALANCE>/g, balance.toString());
+                  processSrc = processSrc.replace(/<COLLECTION>/g, "");
+              }
 
                 let processId: string | undefined = undefined;
                 let retryCount = 0;
@@ -259,12 +322,15 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
         toast({
           description: "Uploaded to Arweave!",
         });
-        onUpload(videoTxIds[0].txid);
+        await createPosts(videoTxIds[0].txid, postTitle, postDescription);
+        onUpload(videoTxIds[0].txid, postTitle, postDescription);
 
     } catch (error) {
       console.error('Error uploading video:', error);
     } finally {
       setUploading(false)
+      setUploadProgress(0);
+
     }
   };
 
@@ -285,8 +351,24 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
           <video
             src={video.preview}
             controls
-            className="w-full rounded-lg"
+            className="w-full rounded-lg max-h-[40vh] object-contain"
           />
+          <div className="flex flex-col gap-4 mt-4">
+        <input
+          type="text"
+          placeholder="Enter video title"
+          value={postTitle}
+          onChange={(e) => setPostTitle(e.target.value)}
+          className="p-2 border rounded text-black"
+        />
+        <textarea
+          placeholder="Enter video description"
+          value={postDescription}
+          onChange={(e) => setPostDescription(e.target.value)}
+          className="p-2 border rounded text-black"
+          rows={4}
+        />
+      </div>
           <p className="mt-2 text-sm text-zinc-400">
             File: {video.file.name} ({(video.size / (1024 * 1024)).toFixed(2)} MB)
           </p>
@@ -308,14 +390,14 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
       <div className="flex justify-between mt-6">
         <Button
           onClick={uploadToArweave}
-          disabled={hasLargeVideo || !video || uploading}
+          disabled={hasLargeVideo || !video || uploading ||!postTitle || !postDescription }
           className="bg-blue-500 hover:bg-blue-600 text-white"
         >
           {uploading ? 'Uploading...' : 'Upload'}
         </Button>
-        <Button variant="outline" onClick={onCancel} disabled={uploading}>
+        {/* <Button variant="outline" onClick={onCancel} disabled={uploading}>
           Cancel
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
@@ -324,4 +406,3 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
 
 
 export default VideoUploader;
-
