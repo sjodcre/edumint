@@ -7,6 +7,7 @@ export default function AppCreateButton() {
   const {setCurrentScreen} = useContext(ScreenContext)
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
+      console.log("Event fired");
       e.preventDefault();
       setDeferredPrompt(e);
     };
@@ -35,7 +36,7 @@ export default function AppCreateButton() {
 
   return (
     <div>
-      <h1>Welcome to repple</h1>
+      {/* <h1>Welcome to EduMint</h1> */}
       {deferredPrompt && (
         <Button onClick={handleInstallClick} variant="default">Install App</Button>
       )}

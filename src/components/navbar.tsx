@@ -5,7 +5,7 @@ import { useContext } from "react";
 export function Navbar() {
   const { setCurrentScreen } = useContext(ScreenContext);
   return (
-    <div className="hidden lg:flex text-white flex-col justify-between w-16 bg-zinc-800 border-r border-zinc-700">
+    <div className="hidden lg:flex  flex-col justify-between w-16 bg-zinc-800 border-r border-zinc-700">
       <div>
         <div className="p-4">
           <h1 className="text-xl font-bold text-white">Brand</h1>

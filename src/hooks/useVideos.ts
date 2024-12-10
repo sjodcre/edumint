@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Video, Post } from "@/types/user";
+import type { Video } from "@/types/user";
 import { useArweaveProvider } from "@/context/ProfileContext";
 import {
   createDataItemSigner,
@@ -35,6 +35,77 @@ export function useVideos() {
         return fetchWithRetry(fn, retries - 1);
       }
       throw error;
+    }
+  };
+
+  const fetchVideos = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      console.log("arProvider.profile", arProvider.profile);
+      const msgRes = await message({
+        process: processId,
+        tags: [
+          { name: "Action", value: "List-Posts-Likes" },
+          { name: "Author-Id", value: arProvider.profile?.walletAddress || "" },
+        ],
+        signer: createDataItemSigner(window.arweaveWallet),
+      });
+
+      const postResult = await result({
+        process: processId,
+        message: msgRes,
+      });
+
+      const parsedPosts = postResult.Messages.map((msg: any) => {
+        const parsedData = JSON.parse(msg.Data);
+        return parsedData.map((post: any) => ({
+          ...post,
+          Liked: post.Liked === 1,
+          LikeCount: post.LikeCount || 0,
+          SellingStatus: post.SellingStatus === 1,
+          Bookmarked: post.Bookmarked === 1,
+        }));
+      });
+
+      console.log("parsedPosts", parsedPosts);
+
+      const videos = parsedPosts.flat().map((post: any) => ({
+        id: post.ID,
+        autoId: post.AutoID,
+        videoUrl: `https://arweave.net/${post.VideoTxId}`,
+        title: post.Title,
+        user: {
+          id: post.AuthorWallet,
+          username: post.Author,
+          profileImage: '/logo-black-icon.svg',
+          tier: "bronze",
+          followers: 0,
+          following: 0,
+          displayName: post.Author
+        },
+        likes: post.LikeCount,
+        likeSummary: {
+          PostID: post.AutoID,
+          LikeCount: post.LikeCount
+        },
+        comments: 0,
+        description: post.Body,
+        price: post.Price,
+        sellingStatus: post.SellingStatus,
+        liked: post.Liked,
+        bookmarked: post.Bookmarked
+      }));
+
+      setVideos(videos);
+      return videos;
+
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to fetch videos";
+      console.error(errorMessage);
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,7 +157,6 @@ export function useVideos() {
         throw new Error("Invalid profile data");
       }
 
-      // console.log("pfp", await profileIdRes.Profile);
       const userDetails = {
         id: activeAddress,
         name: profileRes.Profile.DisplayName || "ANON",
@@ -101,43 +171,16 @@ export function useVideos() {
         version: profileRes.Profile.Version || 1,
       };
 
-      // console.log(userDetails);
-      if (arProvider?.profile) {
-        arProvider.profile = userDetails;
-      }
+      console.log("userDetails", userDetails);
+      // if (arProvider?.profile) {
+      arProvider.profile = userDetails;
+      // }
 
+      setSelectedUser(userDetails);
+      
       // Fetch videos after profile is set
-      const videosRes = await fetchWithRetry(async () => {
-        const msgRes = await message({
-          process: processId,
-          tags: [{ name: "Action", value: "List-Posts" }],
-          signer: createDataItemSigner(window.arweaveWallet),
-        });
+      await fetchVideos();
 
-        const postResult = await result({
-          process: processId,
-          message: msgRes,
-        });
-        console.log("all the posts", postResult);
-        return JSON.parse(postResult.Messages[0].Data);
-      });
-      setVideos(
-        videosRes.map((post: Post) => ({
-          id: post.Id,
-          videoUrl: `https://arweave.net/${post.VideoTxId}`,
-          user: {
-            id: post.AuthorWallet,
-            username: post.Author,
-            profileImage: '/placeholder.png'
-          },
-          likes: post.Likes || 0,
-          comments: post.Comments || 0,
-          description: post.Description || "",
-          price: post.Price,
-          sellingStatus: post.SellingStatus,
-        })),
-      );
-      setSelectedUser(userDetails)
       return userDetails;
     } catch (err) {
       const errorMessage =
@@ -154,13 +197,13 @@ export function useVideos() {
     if (activeAddress && window.arweaveWallet) {
       fetchPlayerProfile();
     }
-  }, [activeAddress]);
+  }, [activeAddress, arProvider.profile]);
 
   return {
     videos,
     loading,
     error,
     fetchPlayerProfile,
-    refetch: () => fetchPlayerProfile(),
+    refetch: () => fetchVideos(),
   };
 }

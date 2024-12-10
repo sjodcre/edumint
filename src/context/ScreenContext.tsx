@@ -17,7 +17,7 @@ export const ScreenProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [currentScreen, setCurrentScreen] = useState<Screen>("onboarding");
 
-  useEffect(() => {
+  useEffect(() => { 
     if (typeof window !== "undefined") {
       // const isStandalone =
         // window.matchMedia('(display-mode: standalone)').matches ||

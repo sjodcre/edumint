@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import arconnect from '/favicon.png';
+import arconnect from '/pre.png';
 import { getProfileByWalletAddress } from '@/lib/ProfileUtils';
 import { useConnection } from '@arweave-wallet-kit/react';
 import { User } from '@/types/user';
