@@ -17,6 +17,7 @@
     "@arweave-wallet-kit/styles": "^0.0.1-beta.3",
     "@arweave-wallet-kit/webwallet-strategy": "^0.0.1-beta.4",
     "@permaweb/aoconnect": "^0.0.62",
+    "@protocol.land/sync": "0.6.0",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-progress": "^1.1.0",
