@@ -33,8 +33,7 @@ export function Navbar() {
         size="icon"
         className="w-full my-4"
         onClick={() => {
-          console.log("button pressed")
-          setCurrentScreen("profile")
+          setCurrentScreen("profile");
         }}
       >
         <User size={24} />
@@ -56,8 +55,11 @@ export function BottomNav() {
         <Home className="text-white" size={24} />
         <span className="sr-only">Home</span>
       </Button>
-      <Button variant="ghost" size="icon"
-        onClick={() => setCurrentScreen("upload")}>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setCurrentScreen("upload")}
+      >
         <Plus className="text-white" size={24} />
         <span className="sr-only">Recent</span>
       </Button>
@@ -72,11 +74,10 @@ export function BottomNav() {
       <Button
         variant="ghost"
         size="icon"
-onClick={() => {
-  setCurrentScreen("profile")
-      console.log('button pressed')
-}}
-
+        onClick={() => {
+          setCurrentScreen("profile");
+          console.log("button pressed");
+        }}
       >
         <User className="text-white" size={24} />
         <span className="sr-only">Profile</span>

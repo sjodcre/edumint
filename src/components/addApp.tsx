@@ -37,7 +37,7 @@ export default function AppCreateButton() {
     <div>
       <h1>Welcome to repple</h1>
       {deferredPrompt && (
-        <Button onClick={handleInstallClick} variant="outline">Install App</Button>
+        <Button onClick={handleInstallClick} variant="default">Install App</Button>
       )}
     </div>
   );

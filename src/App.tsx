@@ -6,6 +6,8 @@ import ProfilePage from "./components/profile/profilePage";
 import { useArweaveProvider } from "./context/ProfileContext";
 import { BottomNav } from "./components/navbar";
 import Upload from "./components/ui/upload.";
+import { Market } from "./components/market/market";
+
 export default function App() {
   const { currentScreen } = useContext(ScreenContext);
   const {selectedUser} = useArweaveProvider()
@@ -14,6 +16,7 @@ export default function App() {
       {currentScreen === "onboarding" && <OnBoard />}
       {currentScreen === "videofeed" && <VideoFeed />}
       {currentScreen === "upload" && <Upload />}
+      {currentScreen === "market" && <Market />}
       {currentScreen === "profile" && selectedUser && <ProfilePage user={selectedUser}/>}
       <BottomNav/>
     </div>
