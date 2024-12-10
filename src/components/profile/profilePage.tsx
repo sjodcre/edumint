@@ -1,8 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "@/types/user";
+import VideoThumbnails from "../videoThumbnails";
+import { useVideos } from "@/hooks/useVideos";
 
 export default function ProfilePage({ user } : {user: User}) {
+  const {videos} = useVideos()
   return (
     <div className="min-h-screen bg-zinc-900 text-white">
       {/* Header */}
@@ -47,8 +50,16 @@ export default function ProfilePage({ user } : {user: User}) {
         </TabsList>
         <TabsContent value="videos" className="p-4">
           <div className="grid grid-cols-3 gap-4">
-            {Array.from({ length: 9 }).map((_, i) => (
+            {/* {Array.from({ length: 9 }).map((_, i) => (
               <div key={i} className="aspect-square bg-zinc-800 rounded-lg" />
+            ))} */}
+
+            {videos.map((video) => (
+              <VideoThumbnails 
+                key={video.id}
+                videoUrl={video.videoUrl}
+                className="cursor-pointor hover:opacity-80 transition-opacity"
+              />
             ))}
           </div>
         </TabsContent>

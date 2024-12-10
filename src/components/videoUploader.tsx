@@ -238,7 +238,6 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
                             data: JSON.stringify({ Id: processId, Quantity: balance }),
                         });
                         videoTxIds.push({ txid: processId, path: "0", type: video.file.type });
-                        setUploadProgress(100)
                         resolve();
                     }
                 } else {
@@ -255,6 +254,7 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
         reader.readAsArrayBuffer(video.file);
       });
 
+        setUploadProgress(100)
         console.log('Images uploaded successfully:', videoTxIds[0].txid);
         toast({
           description: "Uploaded to Arweave!",
@@ -265,6 +265,7 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload, onCancel }) => {
       console.error('Error uploading video:', error);
     } finally {
       setUploading(false)
+      setUploadProgress(0)
     }
   };
 
