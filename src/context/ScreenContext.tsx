@@ -19,15 +19,15 @@ export const ScreenProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => { 
     if (typeof window !== "undefined") {
-      const isStandalone =
-        window.matchMedia('(display-mode: standalone)').matches ||
-        window.matchMedia('(display-mode: fullscreen)').matches ||
-        window.matchMedia('(display-mode: minimal-ui)').matches ||
-        (navigator as any).standalone === true; // For iOS Safari
+      // const isStandalone =
+        // window.matchMedia('(display-mode: standalone)').matches ||
+        // window.matchMedia('(display-mode: fullscreen)').matches ||
+        // window.matchMedia('(display-mode: minimal-ui)').matches ||
+        // (navigator as any).standalone === true; // For iOS Safari
 
-      if (isStandalone) {
+      // if (isStandalone) {
       setCurrentScreen("videofeed");
-      }
+      // }
     }
   }, []);
 

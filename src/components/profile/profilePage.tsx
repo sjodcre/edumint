@@ -89,6 +89,7 @@ export default function ProfilePage({ user } : {user: User}) {
     }
   }, [activeTab]);
 
+
   return (
     <div className="min-h-screen bg-zinc-900 text-white">
       {/* Header */}
@@ -156,6 +157,7 @@ export default function ProfilePage({ user } : {user: User}) {
             ) : (
               <div className="col-span-3 text-center text-zinc-500">No videos found</div>
             )}
+
           </div>
         </TabsContent>
         <TabsContent value="saved" className="p-4">
