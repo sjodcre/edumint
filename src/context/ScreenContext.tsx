@@ -9,7 +9,7 @@ interface ScreenContextType {
 
 export const ScreenContext = createContext<ScreenContextType>({
   currentScreen: "onboarding",
-  setCurrentScreen: () => {},
+  setCurrentScreen: () => { },
 });
 
 export const ScreenProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -17,17 +17,17 @@ export const ScreenProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [currentScreen, setCurrentScreen] = useState<Screen>("onboarding");
 
-  useEffect(() => { 
+  useEffect(() => {
     if (typeof window !== "undefined") {
-      // const isStandalone =
-        // window.matchMedia('(display-mode: standalone)').matches ||
-        // window.matchMedia('(display-mode: fullscreen)').matches ||
-        // window.matchMedia('(display-mode: minimal-ui)').matches ||
-        // (navigator as any).standalone === true; // For iOS Safari
+      const isStandalone =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.matchMedia('(display-mode: fullscreen)').matches ||
+        window.matchMedia('(display-mode: minimal-ui)').matches ||
+        (navigator as any).standalone === true; // For iOS Safari
 
-      // if (isStandalone) {
-      setCurrentScreen("videofeed");
-      // }
+      if (isStandalone) {
+        setCurrentScreen("videofeed");
+      }
     }
   }, []);
 
