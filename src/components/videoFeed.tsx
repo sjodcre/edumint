@@ -13,6 +13,7 @@ export default function VideoFeed() {
   const { videos, loading, refetch: fetchVideos, error } = useVideos();
   const [localVideos, setLocalVideos] = useState(videos);
   // const {videos, loading, error, fetchPlayerProfile} = useStore()
+    // @ts-ignore
   const [videoStatus, setVideoStatus] = useState<boolean>(false);
 
   // @ts-ignore
@@ -317,6 +318,7 @@ function VideoCard({
   onBookmark: () => Promise<void>;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+    // @ts-ignore
   const [isLiked, setIsLiked] = useState(video.liked);
   const arProvider = useArweaveProvider();
   const { connected, connect } = useConnection();
