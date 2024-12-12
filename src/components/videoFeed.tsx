@@ -41,7 +41,7 @@ export default function VideoFeed() {
 
   useEffect(() => {
     const loadVideos = async () => {
-      if (videos.length === 0) {
+      // if (videos.length === 0) {
         const result = await fetchVideos();
         if (result === null) {
           setVideoStatus(false);
@@ -49,7 +49,7 @@ export default function VideoFeed() {
           setVideoStatus(true);
           setLocalVideos(videos);
         }
-      }
+      // }
     };
     loadVideos();
   }, []);
@@ -58,7 +58,7 @@ export default function VideoFeed() {
     // fetchVideos();
     console.log("Setting local videos when videos changes", videos);
     setLocalVideos(videos);
-  }, [videos]);
+  }, [videos, connected]);
 
   useEffect(() => {
     const handleScreenChange = async () => {
