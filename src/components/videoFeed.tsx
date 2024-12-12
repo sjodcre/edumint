@@ -39,26 +39,25 @@ export default function VideoFeed() {
     return true;
   };
 
-  useEffect(() => {
-    const loadVideos = async () => {
-      // if (videos.length === 0) {
-        const result = await fetchVideos();
-        if (result === null) {
-          setVideoStatus(false);
-        } else {
-          setVideoStatus(true);
-          setLocalVideos(videos);
-        }
-      // }
-    };
-    loadVideos();
-  }, []);
+  // useEffect(() => {
+  //   const loadVideos = async () => {
+  //     // if (videos.length === 0) {
+  //       const result = await fetchVideos();
+  //       if (result === null) {
+  //         setVideoStatus(false);
+  //       } else {
+  //         setVideoStatus(true);
+  //         setLocalVideos(videos);
+  //       }
+  //     // }
+  //   };
+  //   loadVideos();
+  // }, []);
 
   useEffect(() => {
-    // fetchVideos();
     console.log("Setting local videos when videos changes", videos);
     setLocalVideos(videos);
-  }, [videos, connected]);
+  }, [videos]);
 
   useEffect(() => {
     const handleScreenChange = async () => {
@@ -79,13 +78,14 @@ export default function VideoFeed() {
     return () => {
       window.removeEventListener('hashchange', handleScreenChange);
     };
-  }, [fetchVideos, videos]);
+  }, []);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const bottom =
       e.currentTarget.scrollHeight - e.currentTarget.scrollTop ===
       e.currentTarget.clientHeight;
     if (bottom && !loading) {
+      console.log("at the bottom of the feed, fetching more videos");
       fetchVideos();
     }
   };

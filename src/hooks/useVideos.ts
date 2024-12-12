@@ -42,8 +42,9 @@ export function useVideos() {
     try {
       setLoading(true);
       setError(null);
-
+      console.log("connect status before fetch: ", connected);
       if(connected) {
+        console.log("fetching videos with profile");
         // First fetch user profile
         const userDetails = await fetchPlayerProfile();
         if (!userDetails) {
@@ -107,6 +108,7 @@ export function useVideos() {
         return videos;
 
       } else {
+        console.log("fetching videos without profile");
         const response = await dryrun({
           process: processId,
           tags: [{ name: "Action", value: "List-Posts" }],
@@ -235,7 +237,8 @@ export function useVideos() {
 
   useEffect(() => {
     if (window.arweaveWallet) {
-      fetchPlayerProfile();
+      // fetchPlayerProfile();
+      fetchVideos();
     }
 }, [connected]);
 
