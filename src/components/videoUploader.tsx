@@ -12,6 +12,8 @@ import { Upload } from 'lucide-react';
 import { Progress } from './ui/progress';
 import { processId } from "@/config/config";
 
+const supportedVideoTypes = ['video/mp4', 'video/quicktime', 'video/x-matroska', 'video/3gpp'];
+
 
 interface Video {
   id: string;
@@ -62,23 +64,54 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload }) => {
   const { connected } = useConnection();
   const hasLargeVideo = video?.size && video.size > 5 * 1024 * 1024; // 5MB in bytes
 
-  const onDrop = useCallback( (acceptedFiles: File[]) => {
+  // const onDrop = useCallback( (acceptedFiles: File[]) => {
+  //   if (acceptedFiles.length > 0) {
+  //     const file = acceptedFiles[0]; // Only take the first file
+  //     const newVideo = {
+  //       id: URL.createObjectURL(file),
+  //       file,
+  //       preview: URL.createObjectURL(file),
+  //       size: file.size
+  //     };
+  //     setVideo(newVideo);
+  //   }
+  // },[] )
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
       const file = acceptedFiles[0]; // Only take the first file
+      if (!supportedVideoTypes.includes(file.type)) {
+        toast({
+          description: `Unsupported file type: ${file.type}`,
+        });
+        console.log("Unsupported file type: ", file.type);
+        return;
+      }
       const newVideo = {
         id: URL.createObjectURL(file),
         file,
         preview: URL.createObjectURL(file),
-        size: file.size
+        size: file.size,
       };
       setVideo(newVideo);
     }
-  },[] )
+  }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
-    onDrop, 
-    accept: { 'video/*': [] },
-    maxFiles: 1 // Only allow one file
+  // const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
+  //   onDrop, 
+  //   accept: {
+  //     'video/mp4': [],
+  //     'video/quicktime': [], // For .mov files (iPhone)
+  //     'video/x-matroska': [], // For .mkv files
+  //     'video/3gpp': [], // For .3gp files
+  //   },
+  //   maxFiles: 1 // Only allow one file
+  // });
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: supportedVideoTypes.reduce((acc, type) => ({ ...acc, [type]: [] }), {}),
+    maxFiles: 1, // Only allow one file
   });
   
   const createPosts = async (videoTxId: string, title: string, description: string) => {
@@ -385,6 +418,9 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload }) => {
             <p className="mt-2 text-sm text-zinc-400">
               File: {video.file.name} ({(video.size / (1024 * 1024)).toFixed(2)} MB)
             </p>
+            {video && !supportedVideoTypes.includes(video.file.type) && (
+              <p className="text-red-500 mt-2 text-sm">This video type is not supported for upload.</p>
+            )}
           </div>
         )}
         <div className="flex items-center mt-4">
@@ -403,7 +439,15 @@ const VideoUploader: React.FC<UploadVideosProps> = ({ onUpload }) => {
         <div className="flex justify-between mt-6">
           <Button
             onClick={uploadToArweave}
-            disabled={hasLargeVideo || !video || uploading ||!postTitle || !postDescription }
+            // disabled={hasLargeVideo || !video || uploading ||!postTitle || !postDescription }
+            disabled={
+              hasLargeVideo ||
+              !video ||
+              uploading ||
+              !postTitle ||
+              !postDescription ||
+              (video && !supportedVideoTypes.includes(video.file.type)) // Disable if unsupported type
+            }
             className="bg-blue-500 hover:bg-blue-600 text-white"
           >
             {uploading ? 'Uploading...' : 'Upload'}

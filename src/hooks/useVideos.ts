@@ -77,6 +77,8 @@ export function useVideos() {
           }));
         });
 
+        console.log("parsedPosts with profile: ", parsedPosts);
+
         const videos = parsedPosts.flat().map((post: any) => ({
           id: post.ID,
           autoId: post.AutoID,
